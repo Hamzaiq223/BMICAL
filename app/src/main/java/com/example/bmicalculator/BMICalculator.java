@@ -2,6 +2,7 @@ package com.example.bmicalculator;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,11 +18,11 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.DecimalFormat;
 
-public class MainActivity extends AppCompatActivity  implements View.OnClickListener {
+public class BMICalculator extends AppCompatActivity  implements View.OnClickListener {
 
     CardView weightCardView;
     CardView ageCardView;
-    TextView weightCounterText, ageCounterText, height_title_text;
+    TextView weightCounterText, ageCounterText, height_title_text,tvKG,tvLBS,tvCM,tvFeet;
     FloatingActionButton weightBtnInc, ageBtnInc;
     FloatingActionButton weightBtnDec, ageBtnDec;
     int weightCounter = 50;
@@ -38,7 +39,7 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_bmicalculator);
 
         // Initialize AdMob
         MobileAds.initialize(this);
@@ -56,9 +57,13 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         weightBtnDec = findViewById(R.id.weight_btn_dec);
         ageBtnInc = findViewById(R.id.age_btn_inc);
         ageBtnDec = findViewById(R.id.age_btn_dec);
-        feetPicker = findViewById(R.id.feet_picker);
-        inchPicker = findViewById(R.id.inch_picker);
-        height_title_text = findViewById(R.id.height_title_text);
+        tvKG = findViewById(R.id.tvKG);
+        tvLBS = findViewById(R.id.tvLBS);
+        tvCM = findViewById(R.id.tvCM);
+        tvFeet = findViewById(R.id.tvFeet);
+//        feetPicker = findViewById(R.id.feet_picker);
+//        inchPicker = findViewById(R.id.inch_picker);
+//        height_title_text = findViewById(R.id.height_title_text);
         calculateBtn = findViewById(R.id.calculate_btn);
         counterInit();
         decimalFormat = new DecimalFormat(".#");
@@ -68,28 +73,27 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         weightBtnDec.setOnClickListener(this);
         ageBtnInc.setOnClickListener(this);
         ageBtnDec.setOnClickListener(this);
-        feetPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-            @Override
-            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                feetValue = newVal;
-                heightValueIs();
-
-            }
-        });
-
-        inchPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-            @Override
-            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                inchValue = newVal;
-                heightValueIs();
-            }
-        });
-        calculateBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                calculateBmi();
-            }
-        });
+        tvFeet.setOnClickListener(this);
+        tvCM.setOnClickListener(this);
+        tvKG.setOnClickListener(this);
+        tvLBS.setOnClickListener(this);
+//        feetPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+//            @Override
+//            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+//                feetValue = newVal;
+//                heightValueIs();
+//
+//            }
+//        });
+//
+//        inchPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+//            @Override
+//            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+//                inchValue = newVal;
+//                heightValueIs();
+//            }
+//        });
+        calculateBtn.setOnClickListener(v -> calculateBmi());
 
     }
 
@@ -126,6 +130,21 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
                 countAge = Integer.toString(ageCounter);
                 ageCounterText.setText(countAge);
                 break;
+            case R.id.tvLBS:
+                weightCounterText.setText("132");
+                tvLBS.setTextColor(ContextCompat.getColor(this, R.color.app_color));
+                tvKG.setTextColor(ContextCompat.getColor(this,R.color.grey));
+                break;
+            case R.id.tvCM:
+                break;
+            case R.id.tvFeet:
+                break;
+            case R.id.tvKG:
+                weightCounterText.setText("50");
+                tvLBS.setTextColor(ContextCompat.getColor(this, R.color.grey));
+                tvKG.setTextColor(ContextCompat.getColor(this,R.color.app_color));
+                break;
+
         }
     }
 
@@ -134,23 +153,23 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         weightCounterText.setText(countWeight);
         countAge = Integer.toString(ageCounter);
         ageCounterText.setText(countAge);
-        feetPicker.setMinValue(1);
-        feetPicker.setMaxValue(8);
-        inchPicker.setMinValue(0);
-        inchPicker.setMaxValue(11);
-        feetPicker.setValue(5);
-        inchPicker.setValue(4);
+//        feetPicker.setMinValue(1);
+//        feetPicker.setMaxValue(8);
+//        inchPicker.setMinValue(0);
+//        inchPicker.setMaxValue(11);
+//        feetPicker.setValue(5);
+//        inchPicker.setValue(4);
         heightValueIs();
     }
     public void heightValueIs()
     {
         if(inchValue == 0){
             heightValue = feetValue + " feet ";
-            height_title_text.setText(heightValue);
+//            height_title_text.setText(heightValue);
         }
         else
             heightValue = feetValue + " feet " + inchValue +" inches";
-        height_title_text.setText(heightValue);
+//        height_title_text.setText(heightValue);
     }
     public void calculateBmi(){
         double heightInInches = feetValue * 12 + inchValue;
