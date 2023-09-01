@@ -4,12 +4,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.NumberPicker;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -21,8 +25,8 @@ import java.text.DecimalFormat;
 public class BMICalculator extends AppCompatActivity  implements View.OnClickListener {
 
     CardView weightCardView;
-    CardView ageCardView;
-    TextView weightCounterText, ageCounterText, height_title_text,tvKG,tvLBS,tvCM,tvFeet;
+    CardView ageCardView,height_cardView;
+    TextView weightCounterText, ageCounterText, height_title_text,tvKG,tvLBS,tvCM,tvFeet,height_counter_text;
     FloatingActionButton weightBtnInc, ageBtnInc;
     FloatingActionButton weightBtnDec, ageBtnDec;
     int weightCounter = 50;
@@ -61,9 +65,9 @@ public class BMICalculator extends AppCompatActivity  implements View.OnClickLis
         tvLBS = findViewById(R.id.tvLBS);
         tvCM = findViewById(R.id.tvCM);
         tvFeet = findViewById(R.id.tvFeet);
-//        feetPicker = findViewById(R.id.feet_picker);
-//        inchPicker = findViewById(R.id.inch_picker);
-//        height_title_text = findViewById(R.id.height_title_text);
+        height_counter_text = findViewById(R.id.height_counter_text);
+        height_cardView = findViewById(R.id.height_cardView);
+
         calculateBtn = findViewById(R.id.calculate_btn);
         counterInit();
         decimalFormat = new DecimalFormat(".#");
@@ -77,6 +81,9 @@ public class BMICalculator extends AppCompatActivity  implements View.OnClickLis
         tvCM.setOnClickListener(this);
         tvKG.setOnClickListener(this);
         tvLBS.setOnClickListener(this);
+        height_counter_text.setOnClickListener(this);
+
+
 //        feetPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
 //            @Override
 //            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
@@ -132,17 +139,24 @@ public class BMICalculator extends AppCompatActivity  implements View.OnClickLis
                 break;
             case R.id.tvLBS:
                 weightCounterText.setText("132");
+                weightCounter = 132;
                 tvLBS.setTextColor(ContextCompat.getColor(this, R.color.app_color));
                 tvKG.setTextColor(ContextCompat.getColor(this,R.color.grey));
                 break;
             case R.id.tvCM:
+                height_counter_text.setText("152");
                 break;
             case R.id.tvFeet:
                 break;
             case R.id.tvKG:
                 weightCounterText.setText("50");
+                weightCounter = 50;
                 tvLBS.setTextColor(ContextCompat.getColor(this, R.color.grey));
                 tvKG.setTextColor(ContextCompat.getColor(this,R.color.app_color));
+                break;
+
+            case R.id.height_counter_text:
+                showCenteredDialog();
                 break;
 
         }
@@ -153,12 +167,7 @@ public class BMICalculator extends AppCompatActivity  implements View.OnClickLis
         weightCounterText.setText(countWeight);
         countAge = Integer.toString(ageCounter);
         ageCounterText.setText(countAge);
-//        feetPicker.setMinValue(1);
-//        feetPicker.setMaxValue(8);
-//        inchPicker.setMinValue(0);
-//        inchPicker.setMaxValue(11);
-//        feetPicker.setValue(5);
-//        inchPicker.setValue(4);
+
         heightValueIs();
     }
     public void heightValueIs()
@@ -181,5 +190,25 @@ public class BMICalculator extends AppCompatActivity  implements View.OnClickLis
         intent.putExtra("bmiVal",bmiValue);
         startActivity(intent);
     }
+    private void showCenteredDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.centered_dialog, null);
+        builder.setView(dialogView);
 
+        feetPicker = dialogView.findViewById(R.id.feet_picker);
+        inchPicker = dialogView.findViewById(R.id.inch_picker);
+        height_title_text = dialogView.findViewById(R.id.height_title_text);
+
+        feetPicker.setMinValue(1);
+        feetPicker.setMaxValue(8);
+        inchPicker.setMinValue(0);
+        inchPicker.setMaxValue(11);
+        feetPicker.setValue(5);
+        inchPicker.setValue(4);
+
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
 }
