@@ -41,8 +41,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/kgs"
-        android:layout_marginEnd="10dp"
+
         android:textColor="@color/app_color"
+        android:padding="10dp"
         app:layout_constraintBottom_toBottomOf="@+id/weight_title_text"
         app:layout_constraintEnd_toStartOf="@+id/tvLBS"
         app:layout_constraintTop_toTopOf="@+id/weight_title_text" />
@@ -52,7 +53,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/lbs"
+        android:textColor="@color/dark_grey"
         android:layout_marginEnd="10dp"
+        android:padding="10dp"
         app:layout_constraintBottom_toBottomOf="@+id/tvKG"
         app:layout_constraintEnd_toEndOf="@+id/weight_cardView"
         app:layout_constraintTop_toTopOf="@+id/tvKG" />
@@ -231,6 +234,7 @@
         android:text="@string/CM"
         android:layout_marginEnd="10dp"
         android:textColor="@color/app_color"
+        android:padding="10dp"
         app:layout_constraintBottom_toBottomOf="@+id/textView"
         app:layout_constraintEnd_toStartOf="@+id/tvFeet"
         app:layout_constraintTop_toTopOf="@+id/textView" />
@@ -241,6 +245,7 @@
         android:layout_height="wrap_content"
         android:text="@string/feet"
         android:layout_marginEnd="10dp"
+        android:padding="10dp"
         app:layout_constraintBottom_toBottomOf="@+id/tvCM"
         app:layout_constraintEnd_toEndOf="@+id/height_cardView"
         app:layout_constraintTop_toTopOf="@+id/tvCM" />

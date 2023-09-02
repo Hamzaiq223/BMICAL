@@ -25,10 +25,14 @@
     <string name="lbs">lbs</string>
     <string name="feet">Feet</string>
     <string name="CM">CM</string>
-    <string name="height_counter_txt">50.0</string>
+    <string name="height_counter_txt">152</string>
     <string name="average">Average : 5 ft 0 inches</string>
     <string name="cancel">Cancel</string>
     <string name="ok">OK</string>
+    <string name="cm">cm</string>
+    <string name="weight">Weight</string>
+    <string name="average_weight">Average : 50 kg</string>
+    <string name="kg">kg</string>
     <string-array name="tips_array">
         <item>You are severely underweight. It is a sign that you\'re not eating enough or you may be ill.</item>
         <item>You are underweight So you may need to put on some weight. </item>

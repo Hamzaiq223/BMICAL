@@ -10,18 +10,18 @@
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/height_title_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/height_title_txt"
-            android:textColor="@color/app_color"
-            android:textSize="24sp"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.502"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView" />
+    <TextView
+        android:id="@+id/height_title_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/height_title_txt"
+        android:textColor="@color/app_color"
+        android:textSize="24sp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -33,7 +33,7 @@
         app:layout_constraintTop_toBottomOf="@+id/height_title_text">
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/feet_cardView"
+            android:id="@+id/kg_cardView"
             android:layout_width="120dp"
             android:layout_height="140dp"
             android:layout_marginStart="24dp"
@@ -49,21 +49,21 @@
                 android:background="@color/grey">
 
                 <NumberPicker
-                    android:id="@+id/feet_picker"
+                    android:id="@+id/kg_picker"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:theme="@style/NumberPickerTheme"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@+id/feet_title"
+                    app:layout_constraintEnd_toEndOf="@+id/kg_title"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/feet_title"
+                    android:id="@+id/kg_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
-                    android:text="@string/ft"
+                    android:text="@string/kg"
                     android:textColor="@color/app_color"
                     android:textSize="24sp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -78,13 +78,13 @@
             android:layout_height="0dp" />
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/inch_cardView"
+            android:id="@+id/lbs_cardView"
             android:layout_width="120dp"
             android:layout_height="140dp"
             android:layout_marginEnd="24dp"
             android:layout_weight="1"
             app:cardCornerRadius="20dp"
-
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -96,7 +96,7 @@
                 android:background="@color/grey">
 
                 <NumberPicker
-                    android:id="@+id/inch_picker"
+                    android:id="@+id/lbs_picker"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:theme="@style/NumberPickerTheme"
@@ -110,7 +110,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
-                    android:text="@string/in"
+                    android:text="@string/lbs"
                     android:textColor="@color/app_color"
                     android:textSize="24sp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -218,7 +218,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="@string/height"
+        android:text="@string/weight"
         android:textColor="@color/app_color"
         android:textSize="20sp"
         android:layout_marginStart="10dp"
@@ -229,13 +229,13 @@
         android:id="@+id/tvAverageHeight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/average"
+        android:text="@string/average_weight"
         android:textColor="@color/dark_grey"
         app:layout_constraintStart_toStartOf="@+id/textView"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
 
 
 
