@@ -1,5 +1,6 @@
 package com.example.bmicalculator;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -7,9 +8,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.FullScreenContentCallback;
+import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.RequestConfiguration;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
+
+import java.util.Arrays;
 
 public class ResultActivity extends AppCompatActivity {
 
@@ -20,6 +29,9 @@ public class ResultActivity extends AppCompatActivity {
     String[] bmiTipsArray;
 
     private AdView adView;
+    // Declare the InterstitialAd object
+
+    InterstitialAd mMobInterstitialAds;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +40,8 @@ public class ResultActivity extends AppCompatActivity {
 
         // Initialize AdMob
         MobileAds.initialize(this);
+
+        InterstitialLoad();
 
         bmiValue = findViewById(R.id.bmi_value);
         bmiCategory = findViewById(R.id.bmi_category);
@@ -39,12 +53,52 @@ public class ResultActivity extends AppCompatActivity {
         bmiValue.setText(bmiValOutput);
         findCategory();
         categoryTips();
-        calculateAgainBtn.setOnClickListener(v -> onBackPressed());
+        calculateAgainBtn.setOnClickListener(view -> {
+            ShowFunUAds();
+            onBackPressed();
+        });
 
         // Load banner ad
         adView = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
+    }
+
+    public void InterstitialLoad() {
+        AdRequest adRequest = new AdRequest.Builder().build();
+
+        InterstitialAd.load(getApplicationContext(), getString(R.string.Admob_Interstitial), adRequest, new InterstitialAdLoadCallback() {
+            @Override
+            public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                ResultActivity.this.mMobInterstitialAds = interstitialAd;
+                interstitialAd.setFullScreenContentCallback(
+                        new FullScreenContentCallback() {
+                            @Override
+                            public void onAdDismissedFullScreenContent() {
+
+                            }
+
+                            @Override
+                            public void onAdFailedToShowFullScreenContent(AdError adError) {
+
+                            }
+
+                            @Override
+                            public void onAdShowedFullScreenContent() {
+                            }
+                        });
+            }
+
+            @Override
+            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+            }
+        });
+    }
+
+    private void ShowFunUAds() {
+        if (this.mMobInterstitialAds != null) {
+            this.mMobInterstitialAds.show(ResultActivity.this);
+        }
     }
 
     private void categoryTips() {

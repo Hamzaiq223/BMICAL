@@ -1,5 +1,6 @@
 package com.example.bmicalculator;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
@@ -18,7 +19,11 @@ import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.appopen.AppOpenAd;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.DecimalFormat;
@@ -26,6 +31,9 @@ import java.text.DecimalFormat;
 public class BMICalculator extends AppCompatActivity  implements View.OnClickListener {
 
     CardView weightCardView;
+    private AppOpenAd appOpenAd;
+    private AppOpenAd.AppOpenAdLoadCallback loadCallback;
+
     CardView ageCardView,height_cardView;
     TextView weightCounterText, ageCounterText, height_title_text,tvKG,tvLBS,tvCM,tvFeet,height_counter_text;
     FloatingActionButton weightBtnInc, ageBtnInc;
@@ -34,7 +42,7 @@ public class BMICalculator extends AppCompatActivity  implements View.OnClickLis
     int ageCounter = 25;
     String countWeight, countAge;
     NumberPicker feetPicker, inchPicker;
-    int feetValue = 5 , inchValue = 4;
+    int feetValue = 5 , inchValue = 0;
     Button calculateBtn;
     String heightValue,heightDialog = "CM",weightDialog = "KG";
     DecimalFormat decimalFormat;
@@ -50,6 +58,10 @@ public class BMICalculator extends AppCompatActivity  implements View.OnClickLis
 
         // Initialize AdMob
         MobileAds.initialize(this);
+        MobileAds.initialize(this, initializationStatus -> {
+            // Initialization completed, you can now load and display ads
+        });
+
 
         // Load banner ad
         adView = findViewById(R.id.adView);
@@ -88,14 +100,67 @@ public class BMICalculator extends AppCompatActivity  implements View.OnClickLis
         weightCounterText.setOnClickListener(this);
 
         calculateBtn.setOnClickListener(view -> {
-            if(weightDialog.equals("KG"))
+            if(weightDialog.equals("KG") && heightDialog.equals("FEET"))
             {
                 calculateBmi();
+            }
+            else if(weightDialog.equals("KG") && heightDialog.equals("CM"))
+            {
+                calculateBMI(Double.parseDouble(weightCounterText.getText().toString()),Double.parseDouble(height_counter_text.getText().toString()));
+            }
+            else if((weightDialog.equals("LBS") && heightDialog.equals("CM")))
+            {
+                bmiCal(Double.parseDouble(weightCounterText.getText().toString()),Double.parseDouble(height_counter_text.getText().toString()));
+            }
+            else{
+                double heightCM = feetToCentimeters(Double.parseDouble(height_counter_text.getText().toString()));
+
+                bmiCal(Double.parseDouble(weightCounterText.getText().toString()),heightCM);
+
             }
         });
 
     }
 
+
+    // Method to load the App Open Ad
+    private void loadAppOpenAd() {
+        AdRequest adRequest = new AdRequest.Builder().build();
+        AppOpenAd.load(this, "ca-app-pub-3940256099942544/3419835294", adRequest, AppOpenAd.APP_OPEN_AD_ORIENTATION_PORTRAIT, loadCallback);
+    }
+
+    // Method to show the App Open Ad if available
+    private void showAppOpenAdIfAvailable() {
+        if (appOpenAd != null) {
+            appOpenAd.show(this);
+        } else {
+            // App open ad not available, handle accordingly
+        }
+    }
+    // Implement the App Open Ad Load Callback
+    private void initializeAppOpenAdLoadCallback() {
+        loadCallback = new AppOpenAd.AppOpenAdLoadCallback() {
+            @Override
+            public void onAdLoaded(@NonNull AppOpenAd ad) {
+                appOpenAd = ad;
+                showAppOpenAdIfAvailable();
+            }
+
+            @Override
+            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                // Handle ad loading failure
+            }
+        };
+    }
+    public double feetToCentimeters(double heightInFeet) {
+        // Define a constant for the number of centimeters in a foot
+        final double CM_PER_FOOT = 30.48;
+
+        // Convert feet to centimeters
+        double heightInCentimeters = heightInFeet * CM_PER_FOOT;
+
+        return heightInCentimeters;
+    }
 
     @Override
     public void onClick(View view) {
@@ -176,18 +241,8 @@ public class BMICalculator extends AppCompatActivity  implements View.OnClickLis
         countAge = Integer.toString(ageCounter);
         ageCounterText.setText(countAge);
 
-        heightValueIs();
     }
-    public void heightValueIs()
-    {
-        if(inchValue == 0){
-            heightValue = feetValue + " feet ";
-//            height_title_text.setText(heightValue);
-        }
-        else
-            heightValue = feetValue + " feet " + inchValue +" inches";
-//        height_title_text.setText(heightValue);
-    }
+
     public void calculateBmi(){
         double heightInInches = feetValue * 12 + inchValue;
         double heightInMetres = heightInInches / 39.37;
@@ -198,6 +253,35 @@ public class BMICalculator extends AppCompatActivity  implements View.OnClickLis
         intent.putExtra("bmiVal",bmiValue);
         startActivity(intent);
     }
+    public void  calculateBMI(double weightInKg, double heightInCm) {
+        // Convert height from cm to meters
+        double heightInMeters = heightInCm / 100.0;
+
+        // Calculate BMI using the formula: BMI = weight (kg) / (height (m) * height (m))
+        double bmi = weightInKg / (heightInMeters * heightInMeters);
+        String bmiValue = decimalFormat.format(bmi);
+        Intent intent = new Intent(this,ResultActivity.class);
+        intent.putExtra("bmiVal",bmiValue);
+        startActivity(intent);
+    }
+    public  void bmiCal(double weightInPounds, double heightInCm) {
+        // Convert weight from pounds to kilograms
+        double weightInKg = weightInPounds * 0.45359237;
+
+        // Convert height from cm to meters
+        double heightInMeters = heightInCm / 100.0;
+
+        // Calculate BMI using the formula: BMI = weight (kg) / (height (m) * height (m))
+        double bmi = weightInKg / (heightInMeters * heightInMeters);
+
+        String bmiValue = decimalFormat.format(bmi);
+        Intent intent = new Intent(this,ResultActivity.class);
+        intent.putExtra("bmiVal",bmiValue);
+        startActivity(intent);
+
+    }
+
+
     private void showCenteredDialog(Boolean check) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
@@ -225,6 +309,12 @@ public class BMICalculator extends AppCompatActivity  implements View.OnClickLis
         btnOk.setOnClickListener(view -> {
              dialog.dismiss();
              height_counter_text.setText(check ? String.format("%s", cmPicker.getValue()) : String.format("%s.%s", feetPicker.getValue(), inchPicker.getValue()));
+             if(!check)
+             {
+                 feetValue = feetPicker.getValue();
+                 inchValue = inchPicker.getValue();
+                 Log.d("Height in Feet",feetValue+" "+inchValue);
+             }
         });
 
         btnCancel.setOnClickListener(view -> {
@@ -249,6 +339,7 @@ public class BMICalculator extends AppCompatActivity  implements View.OnClickLis
 
             int ft = Integer.parseInt(parts[0]);
             int inch = Integer.parseInt(parts[1]);
+
             feetPicker.setValue(ft);
             inchPicker.setValue(inch);
 

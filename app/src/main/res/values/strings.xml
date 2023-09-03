@@ -21,6 +21,7 @@
     <string name="calculate_your_bmi">Calculate Your BMI</string>
     <string name="normal_weight">Normal Weight in KGs : 42.7 - 57.5</string>
     <string name="admob_id">ca-app-pub-3940256099942544~3347511713</string>
+    <string name="Admob_Interstitial">ca-app-pub-3940256099942544/1033173712</string>
     <string name="kgs">kg</string>
     <string name="lbs">lbs</string>
     <string name="feet">Feet</string>
