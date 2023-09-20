@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace 'com.example.bmicalculator'
+    namespace 'com.tool.bmicalculator'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.example.bmicalculator"
+        applicationId "com.tool.bmicalculator"
         minSdk 24
         targetSdk 33
         versionCode 1

@@ -1,4 +1,4 @@
-package com.example.bmicalculator;
+package com.tool.bmicalculator;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -16,7 +16,7 @@ public class Splash extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
 
         new Handler().postDelayed(() -> {
-            Intent intent = new Intent(Splash.this, BMICalculator.class);
+            Intent intent = new Intent(Splash.this, com.tool.bmicalculator.BMICalculator.class);
             startActivity(intent);
             finish();
         }, SPLASH_DELAY);

@@ -1,4 +1,4 @@
-package com.example.bmicalculator;
+package com.tool.bmicalculator;
 
 import org.junit.Test;
 

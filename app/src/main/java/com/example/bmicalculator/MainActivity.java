@@ -1,4 +1,4 @@
-package com.example.bmicalculator;
+package com.tool.bmicalculator;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -158,7 +158,7 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         double heightInMetreSq = heightInMetres * heightInMetres;
         double bmi = weightCounter / heightInMetreSq;
         String bmiValue = decimalFormat.format(bmi);
-        Intent intent = new Intent(this,ResultActivity.class);
+        Intent intent = new Intent(this, com.tool.bmicalculator.ResultActivity.class);
         intent.putExtra("bmiVal",bmiValue);
         startActivity(intent);
     }
